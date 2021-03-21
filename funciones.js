@@ -335,7 +335,7 @@ var touch={
 
         function t2 (event){
             touch.aux = true;
-            console.log(event.touches[0].clientX);
+            //console.log(event.touches[0].clientX);
         };
 
         //Chequeo cuales suelto para meterlas en soltadas y sacarlas de mantenidas
@@ -346,7 +346,7 @@ var touch={
             touch.aux = false;
         };
 
-        console.log(touch.x)
+        //console.log(touch.x)
 
         touch.click_pulsado = (touch.click_mantenido == false && touch.aux ==true);
         touch.click_soltado = (touch.click_mantenido == true && touch.aux == false)
