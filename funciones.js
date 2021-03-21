@@ -1059,7 +1059,7 @@ addInstanceType("draganddrop",function(){
 
     var radio = ((other().x - these.x)^2 + (other().y - these.y)^2)^(1/2);
 
-    these.clicked = (radio < 25)? these.clicked : false;
+    these.clicked = (radio < 50)? these.clicked : false;
 
     these.x = (these.clicked)? other().x-15: these.x;
     these.y = (these.clicked)? other().y-15: these.y;
