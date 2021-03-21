@@ -1041,7 +1041,7 @@ addInstanceType("mouse",function(){},function(){
 
 
     addDraw(true,"tablero",350/2,0,450,450,0);
-    //addDraw(false,"#FFFF55",these.x,these.y,these.width,these.height);
+    addDraw(false,"#FFFF55",these.x,these.y,these.width,these.height);
 });
 
 
@@ -1057,8 +1057,15 @@ addInstanceType("draganddrop",function(){
     these.clicked = (scr.place_meeting(other().x,other().y,"draganddrop",true) == these.id && (mouse.click_mantenido || touch.click_mantenido) && these.clicked == false)? true : these.clicked;
     these.clicked = these.clicked && (mouse.click_mantenido || touch.click_mantenido);
 
+    var radio = ((other().x - these.x)^2 + (other().y - these.y)^2)^(1/2);
+
+    these.clicked = (radio < 25)? these.clicked : false;
+
     these.x = (these.clicked)? other().x-15: these.x;
     these.y = (these.clicked)? other().y-15: these.y;
+
+    
+    
     
 
 },function(){
