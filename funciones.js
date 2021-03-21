@@ -1041,7 +1041,7 @@ addInstanceType("mouse",function(){},function(){
 
 
     addDraw(true,"tablero",350/2,0,450,450,0);
-    addDraw(false,"#FFFF55",these.x,these.y,these.width,these.height);
+    //addDraw(false,"#FFFF55",these.x,these.y,these.width,these.height);
 });
 
 
