@@ -16,6 +16,8 @@ var camera_y = 0;
 
 matrizForDestroy=[];
 
+
+
 scr = {
     Approach: function(start,end,step){
         if(start > end){
@@ -278,7 +280,6 @@ var mouse={
             mouse.y = event.clientY /dimenW * 800- camera_y;
         };
 
-
         //Chequeo cuales clickeo para meterlas en pulsadas y mantenidas
 
         
@@ -304,6 +305,61 @@ var mouse={
         
     }
 }
+
+var touch={
+    click_mantenido: false,
+    click_pulsado: false,
+    click_soltado: false,
+    x: null,
+    y: null,
+    aux:false,
+
+    activar: function(){
+
+        document.getElementById("screen").addEventListener("touchmove",t1);
+
+        function t1 (event){
+            //console.log(event.screenX);
+            //console.log(event);
+            touch.x = event.touches[0].clientX /dimenW * 800- camera_x;
+            touch.y = event.touches[0].clientY /dimenW * 800- camera_y;
+            
+        };
+
+        
+
+
+        //Chequeo cuales clickeo para meterlas en pulsadas y mantenidas
+
+        document.getElementById("screen").addEventListener("touchstart",t2);
+
+        function t2 (event){
+            touch.aux = true;
+            console.log(event.touches[0].clientX);
+        };
+
+        //Chequeo cuales suelto para meterlas en soltadas y sacarlas de mantenidas
+
+        document.getElementById("screen").addEventListener("touchend",t3);
+
+        function t3 (event){
+            touch.aux = false;
+        };
+
+        console.log(touch.x)
+
+        touch.click_pulsado = (touch.click_mantenido == false && touch.aux ==true);
+        touch.click_soltado = (touch.click_mantenido == true && touch.aux == false)
+        touch.click_mantenido = touch.aux;
+
+
+        
+
+        
+        
+    }
+}
+
 
 //------------------------
 function screenfun(tilesX,tilesY){
@@ -341,6 +397,7 @@ function screenfun(tilesX,tilesY){
     stk.scale(2,2);
 
     stk.fillRect(0,0,800,450);
+    
     };
     
 
@@ -450,6 +507,7 @@ var buclePrincipal = {
         
 
         mouse.activar();
+        touch.activar();
 
         
 
@@ -975,14 +1033,15 @@ function() {
 
 
 addInstanceType("mouse",function(){},function(){
-    these.x = mouse.x;
-    these.y = mouse.y;
+    these.x = touch.x || mouse.x;
+    these.y = touch.y || mouse.y;
+    //console.log(these.x)
 },function(){
     
 
 
     addDraw(true,"tablero",350/2,0,450,450,0);
-    //addDraw(false,"#FFFF55",these.x,these.y,these.width,these.height);
+    addDraw(false,"#FFFF55",these.x,these.y,these.width,these.height);
 });
 
 
@@ -995,11 +1054,11 @@ addInstanceType("draganddrop",function(){
 },function(){
 
     //console.log(client.x);
-    these.clicked = (scr.place_meeting(mouse.x,mouse.y,"draganddrop",true) == these.id && mouse.click_mantenido && these.clicked == false)? true : these.clicked;
-    these.clicked = these.clicked && mouse.click_mantenido;
+    these.clicked = (scr.place_meeting(other().x,other().y,"draganddrop",true) == these.id && (mouse.click_mantenido || touch.click_mantenido) && these.clicked == false)? true : these.clicked;
+    these.clicked = these.clicked && (mouse.click_mantenido || touch.click_mantenido);
 
-    these.x = (these.clicked)? mouse.x-15: these.x;
-    these.y = (these.clicked)? mouse.y-15: these.y;
+    these.x = (these.clicked)? other().x-15: these.x;
+    these.y = (these.clicked)? other().y-15: these.y;
     
 
 },function(){
@@ -1045,7 +1104,7 @@ addInstanceType("draganddrop",function(){
 
 //crearInstancia("Player",0+22+10,225);
 
-crearInstancia("mouse",0,0)
+saveOther(crearInstancia("mouse",0,0).id);
 
 var num = 45.6;
 var num2 = 215+9;
@@ -1134,4 +1193,8 @@ Descripcion: Probar a hacer un menu para actualizar el framework
 
 
 */
+
+
+
+
 
